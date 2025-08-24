@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MechAI+ - AI-Powered Mechanic & Safety Assistant</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/styles.css" rel="stylesheet">
+
+
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .map-placeholder {
+            position: relative;
+            height: 400px;
+            /* Adjust height as needed */
+            background-color: #f0f0f0;
+            /* Optional background for the map section */
+            text-align: center;
+            padding: 10px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <i class="bi bi-tools me-2"></i>MechAI+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#diagnosis">Diagnosis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#guides">Guides</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sos">SOS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tips">Tips</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="hero-title mb-4">Fix it yourself, stay safe anywhere</h1>
+                    <p class="hero-subtitle mb-5">AI-powered vehicle diagnosis and safety tools for rural communities
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-lg me-3 mb-3" onclick="scrollToSection('diagnosis')">
+                            <i class="bi bi-search me-2"></i>Start Diagnosis
+                        </button>
+                        <button class="btn btn-danger btn-lg mb-3" onclick="scrollToSection('sos')">
+                            <i class="bi bi-exclamation-triangle me-2"></i>SOS Now
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="/static/images/photo-1619818761105-221bf0bee9d6.avif" alt="MechAI+ App"
+                        class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Highlights -->
+        <div class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card h-100">
+                        <a href="https://res.cloudinary.com/dkyqz4zuc/video/upload/v1755967434/WhatsApp_Video_2025-08-23_at_4.47.33_PM_size42.mp4" style="text-decoration: none;">
+                        <div class="card-body text-center">
+                            <i class="bi bi-wifi-off feature-icon mb-3"></i>
+                            <h5 class="card-title">Offline Support</h5>
+                            <p class="card-text">Works without internet using local AI models for instant solutions</p>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-mic feature-icon mb-3"></i>
+                            <h5 class="card-title">Voice-First Interface</h5>
+                            <p class="card-text">Speak your problem in local language, get spoken solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-shield-check feature-icon mb-3"></i>
+                            <h5 class="card-title">Female Security Mode</h5>
+                            <p class="card-text">Emergency SOS, location sharing, and safety tools for women</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diagnosis Section -->
+    <section id="diagnosis" class="section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Vehicle Diagnosis</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6 mb-4">
+                    <div class="diagnosis-tile" onclick="uploadPhoto()">
+                        <i class="bi bi-camera diagnosis-icon"></i>
+                        <h4>Upload Photo</h4>
+                        <p>Take a picture of the problem area</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="diagnosis-tile" onclick="recordVoice()">
+                        <i class="bi bi-mic diagnosis-icon"></i>
+                        <h4>Record Voice</h4>
+                        <p>Describe the issue in your language</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="results-section">
+                        <h4 class="mb-3">Diagnosis Results</h4>
+                        <div id="diagnosisResults">
+                            <p class="text-muted">Upload a photo or record your voice to get diagnosis results...</p>
+                        </div>
+                        <button class="btn btn-primary mt-3" onclick="scrollToSection('guides')">
+                            <i class="bi bi-book me-2"></i>View Repair Guides
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides Section -->
+    <section id="guides" class="section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Repair Guide Library</h2>
+
+            <!-- Filter Dropdown -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <select class="form-select" id="guideFilter" onchange="filterGuides()">
+                        <option value="all">All Categories</option>
+                        <option value="engine">Engine</option>
+                        <option value="battery">Battery</option>
+                        <option value="tyres">Tyres</option>
+                        <option value="electrical">Electrical</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Guide Cards -->
+            <div class="row" id="guideGrid">
+                <div class="col-md-6 col-lg-4 mb-4" data-category="engine">
+                    <div class="guide-card">
+                        <img src="/static/images/photo-1619818761105-221bf0bee9d6.avif" alt="Engine Guide">
+                        <div class="card-body">
+                            <h5 class="guide-title">Engine Won't Start</h5>
+                            <p class="guide-description">Step-by-step guide to diagnose starting issues</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-category="battery">
+                    <div class="guide-card">
+                        <a href="/templates/battery/index.html">
+                            <img src="/static/images/battery.avif" alt="Battery Guide">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="guide-title">Battery Problems</h5>
+                            <p class="guide-description">How to check and replace vehicle battery</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-category="tyres">
+                    <div class="guide-card">
+                        <img src="/static/images/flat_tyre.avif" alt="Tyre Guide">
+                        <div class="card-body">
+                            <h5 class="guide-title">Flat Tyre Fix</h5>
+                            <p class="guide-description">Emergency tyre repair techniques</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-category="electrical">
+                    <div class="guide-card">
+                        <img src="/static/images/wire.avif" alt="Electrical Guide">
+                        <div class="card-body">
+                            <h5 class="guide-title">Electrical Faults</h5>
+                            <p class="guide-description">Common wiring and electrical problems</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-category="engine">
+                    <div class="guide-card">
+                        <img src="/static/images/oil.avif" alt="Oil Guide">
+                        <div class="card-body">
+                            <h5 class="guide-title">Oil Change</h5>
+                            <p class="guide-description">Regular maintenance and oil replacement</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-category="tyres">
+                    <div class="guide-card">
+                        <img src="/static/images/tyre_pressure.avif" alt="Pressure Guide">
+                        <div class="card-body">
+                            <h5 class="guide-title">Tyre Pressure Check</h5>
+                            <p class="guide-description">Proper tyre inflation techniques</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOS Section -->
+    <section id="sos" class="section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Emergency SOS</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <div class="sos-container">
+                        <button class="sos-button" onclick="activateSOS()">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <span>SOS</span>
+                        </button>
+                        <p class="mt-4">Emergency help - sends location to trusted contacts</p>
+                    </div>
+
+                    <!-- Emergency Tools -->
+                    <div class="row mt-5">
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary btn-lg w-100" onclick="toggleFlashlight()">
+                                <i class="bi bi-lightbulb me-2"></i>Flashlight
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary btn-lg w-100" onclick="shareLocation()">
+                                <i class="bi bi-geo-alt me-2"></i>Share Location
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary btn-lg w-100" onclick="callEmergency()">
+                                <i class="bi bi-telephone me-2"></i>Emergency Call
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Map Placeholder -->
+                    <div class="map-placeholder mt-5">
+
+                        <!-- Map Container -->
+                        <div id="map"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section id="tips" class="section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Maintenance Tips</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-droplet"></i>
+                        </div>
+                        <h5>Monsoon Preparation</h5>
+                        <p>Check tyre pressure and brake fluid before rainy season</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <a href="/templates/summer/index.html" style="text-decoration: none;" >
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-thermometer-sun"></i>
+                        </div>
+                        <h5>Summer Care</h5>
+                        <p>Monitor engine temperature and coolant levels during hot weather</p>
+                    </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-snow"></i>
+                        </div>
+                        <h5>Winter Maintenance</h5>
+                        <p>Battery performance drops in cold - keep terminals clean</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <h5>Regular Checks</h5>
+                        <p>Weekly inspection of oil, water, and tyre condition</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <h5>Tool Kit</h5>
+                        <p>Essential tools every rural vehicle owner should carry</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5>Safety First</h5>
+                        <p>Always park safely and use warning triangles during repairs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">About MechAI+</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4">
+                    <h3 class="mb-3">Our Mission</h3>
+                    <p class="lead">Empowering rural communities with AI-powered vehicle diagnosis and safety tools that
+                        work offline, designed specifically for non-tech-savvy users.</p>
+                    <p>We understand the challenges faced by farmers, women commuters, and field workers in remote areas
+                        when vehicles break down. MechAI+ provides instant solutions and ensures safety even in the most
+                        isolated locations.</p>
+
+                    <h4 class="mt-4 mb-3">Impact</h4>
+                    <ul>
+                        <li>Reduces vehicle downtime by 70%</li>
+                        <li>Saves average ₹5000 per repair through self-diagnosis</li>
+                        <li>Empowers 10,000+ rural users with vehicle knowledge</li>
+                        <li>Provides safety tools for women in remote areas</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <img src="/static/images/team.png" alt="Our Team" class="img-fluid rounded">
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="text-center mb-4">Our Team</h3>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="team-member">
+                        <img src="/static/images/sang.jpg" alt="Team Member 1" class="team-photo">
+                        <h5 class="mt-3">Sanghita Roy</h5>
+                        <p class="text-muted">Team Lead</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="team-member">
+                        <img src="/static/images/zoh.jpg" alt="Team Member 2" class="team-photo">
+                        <h5 class="mt-3">Mohammed Zoheb </h5>
+                        <p class="text-muted">Backend Developer</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="team-member">
+                        <img src="/static/images/anus.jpg" alt="Team Member 3" class="team-photo">
+                        <h5 class="mt-3">Anushka Shaw</h5>
+                        <p class="text-muted">Designer</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="team-member">
+                        <img src="/static/images/ana.jpg" alt="Team Member 3" class="team-photo">
+                        <h5 class="mt-3">Anand Kumar Mandal</h5>
+                        <p class="text-muted">Frontend Developer</p>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Contact Us</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <form class="contact-form" onsubmit="submitForm(event)">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="4" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-send me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Contact Info -->
+                    <div class="contact-info mt-5 text-center">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <i class="bi bi-envelope contact-icon"></i>
+                                <p>support@mechai.app</p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <i class="bi bi-telephone contact-icon"></i>
+                                <p>+91 98765 43210</p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <i class="bi bi-geo-alt contact-icon"></i>
+                                <p>Rural Tech Hub, India</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-tools me-2"></i>MechAI+</h5>
+                    <p>Empowering rural communities with AI-powered vehicle solutions</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2024 MechAI+. All rights reserved.</p>
+                    <p>Designed for rural India with ❤️</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/static/js/script.js"></script>
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+    <!-- Leaflet JS
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script> -->
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+    <script>
+        // Initialize the map with a default position
+        const map = L.map('map').setView([0, 0], 15);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+
+        // Marker and accuracy circle
+        let marker = L.marker([0, 0]).addTo(map);
+        let accuracyCircle = L.circle([0, 0], { radius: 0 }).addTo(map);
+
+        // Flag to ensure map only zooms once
+        let mapInitialized = false;
+
+        // Watch and update position
+        if ("geolocation" in navigator) {
+            navigator.geolocation.watchPosition(
+                position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+
+                    const latlng = [lat, lng];
+
+                    // Update marker and accuracy circle
+                    marker.setLatLng(latlng);
+                    accuracyCircle.setLatLng(latlng);
+                    accuracyCircle.setRadius(accuracy);
+
+                    // Move map view smoothly only the first time
+                    if (!mapInitialized) {
+                        map.setView(latlng, 16);
+                        mapInitialized = true;
+                    }
+
+                },
+                error => {
+                    alert("Error getting location: " + error.message);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 10000
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    </script>
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+</body>
+
+</html>
